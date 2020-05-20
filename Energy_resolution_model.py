@@ -43,7 +43,7 @@ def train_model(**Training_para):
         #read in the data
         loss_function_tag = 'BinaryX'
 
-        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case],\
+        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = load_data(case_list[case],\
                                                                                      normalization = Training_para['normalization'],\
                                                                                      flatten = Training_para['flatten'],\
                                                                                      pad = Training_para['pad'],
