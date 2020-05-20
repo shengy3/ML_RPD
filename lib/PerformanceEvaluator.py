@@ -1,5 +1,6 @@
 import numpy as np
-
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 case_list = ["120GeV_neutron_uniplane_HAD",\
@@ -21,13 +22,19 @@ def get_data_set(case, normalization = False, flatten = False, pad = 1, test_siz
     
         """
         case: str, the case name to load
-        normalization: bool, noramlize the photon arrival at the  PMT (bias) (4x4), and photon vertex (truth)(4x4)
+        normalization: bool, noramlize the photon arrival at the  PMT (bias) (4x4), and photon vertex (truth)(4x4) by its max in the event
         flatten: bool, flatten the photon vertex (4x4) into 16x1 array
         pad: int, add the padding to the bias
         test_size: float, the ratio of the test set in the whole data set
         
+        return:
+        
+        bais: array in (events, width, height, channel(1)) dimension
+        truth: dependent on the flatten flag. flatten is True (events, 16, 1), flatten is False: (events, 4, 4, 1)d imension
+        gpos: array in (events, x, y) dimension
+        
         example:
-        train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = load_data(case_list[case])
+        train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case])
         """
         PATH = f"./Data/{case}.pickle"
         df = pd.read_pickle(PATH)
