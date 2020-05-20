@@ -7,7 +7,7 @@ from tensorflow.keras.models import Model
 import tensorflow
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
-from lib.PerformanceEvaluator import get_event_in_range, load_data
+from lib.PerformanceEvaluator import get_event_in_range, get_data_set
 
 %load_ext autoreload
 %autoreload 2
@@ -43,7 +43,7 @@ def train_model(**Training_para):
         #read in the data
         loss_function_tag = 'BinaryX'
 
-        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = load_data(case_list[case],\
+        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case],\
                                                                                      normalization = Training_para['normalization'],\
                                                                                      flatten = Training_para['flatten'],\
                                                                                      pad = Training_para['pad'],
