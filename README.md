@@ -7,7 +7,7 @@ For now, the input is 6x6 array, 4x4 channels with 1 padding. The output is the 
 
 lib:
     
-    -Visualization.py
+-Visualization.py
     plt_residual(residual, **plt_para):
     """
     residual: it take array with dimension (events, x, y) and draw the histogram of each evetns
@@ -22,8 +22,8 @@ lib:
     "density": normalize histogram to density, True
     "output_path": output path for figure, " "
     """
-    
-    -PerformanceEvaluator.py
+
+-PerformanceEvaluator.py
     get_data_set(case, normalization = False, flatten = False, pad = 1, test_size=0.3)
     """
     case: str, the case name to load
@@ -50,7 +50,7 @@ lib:
     train_bias, tra_gpos, truth = get_event_in_range(train_bias, tra_gpos, tra_truth)
     """
     
-    -RPD_CM_calculator.py
+-RPD_CM_calculator.py
     class RPD_CM_calculator():
     def __init__(self,feature_array, correction = True,  normalization = False):
     """
