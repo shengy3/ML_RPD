@@ -6,7 +6,7 @@ You can train the model by
 
 The output model will be in ./Output/Model  
 For now, the input is 6x6 array, 4x4 channels with 1 padding. The output is the 1 x 16 array.
-
+You can performa the evaluation in Performance_evaluation.ipynb
 
 lib:
     
