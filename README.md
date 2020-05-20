@@ -7,9 +7,8 @@ For now, the input is 6x6 array, 4x4 channels with 1 padding. The output is the 
 
 lib:
     
--Visualization.py
-    plt_residual(residual, **plt_para):
-    """
+    -Visualization.py
+    def plt_residual(residual, **plt_para):
     residual: it take array with dimension (events, x, y) and draw the histogram of each evetns
     plt_para: take the keywords for the plot
     example: 
@@ -21,10 +20,9 @@ lib:
     "xlim": the range of the plot in x, [-3, 3],
     "density": normalize histogram to density, True
     "output_path": output path for figure, " "
-    """
 
--PerformanceEvaluator.py
-    get_data_set(case, normalization = False, flatten = False, pad = 1, test_size=0.3)
+    -PerformanceEvaluator.py
+    def get_data_set(case, normalization = False, flatten = False, pad = 1, test_size=0.3)
     """
     case: str, the case name to load
     normalization: bool, noramlize the photon arrival at the  PMT (bias) (4x4), and photon vertex (truth)(4x4) by its max in the event
@@ -33,14 +31,12 @@ lib:
     test_size: float, the ratio of the test set in the whole data set
 
     return:
-
     bais: array in (events, width, height, channel(1)) dimension
     truth: dependent on the flatten flag. flatten is True (events, 16, 1), flatten is False: (events, 4, 4, 1)d imension
     gpos: array in (events, x, y) dimension
 
     example:
     train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case])
-    """
     
     get_event_in_range(bias, gpos, truth, lim = 10):
     """
@@ -50,7 +46,7 @@ lib:
     train_bias, tra_gpos, truth = get_event_in_range(train_bias, tra_gpos, tra_truth)
     """
     
--RPD_CM_calculator.py
+    -RPD_CM_calculator.py
     class RPD_CM_calculator():
     def __init__(self,feature_array, correction = True,  normalization = False):
     """
