@@ -3,6 +3,14 @@ import numpy as np
 
 class RPD_CM_calculator():
     def __init__(self,feature_array, correction = True,  normalization = False):
+        """
+        feature_array: np array, the array for calculate center of mass. The default array dimension (event, 6,6)
+        correction: bool, whether do the row subtraction correction
+        normalization: bool, whether normalize each events to its summation of signal over all the channel
+        calculate_CM: calculat the CM for each events
+        CM: the CoM result of the each event. (events, x, y)
+        """
+       
         self.feature_array = feature_array
         self.correction = correction
         self.normalization = normalization
@@ -60,6 +68,8 @@ class RPD_CM_calculator():
             CM.append([X, Y])
         self.process_array = process_array
         self.CM = np.array(CM)
+        print("Done")
+        print("The result is in self.CM")
     
     def normalize_feature(self, process_array):
         process_array = process_array.reshape(-1, self.X_pos_array.shape[0], self.X_pos_array.shape[0])
