@@ -8,7 +8,9 @@ For now, the input is 6x6 array, 4x4 channels with 1 padding. The output is the 
 lib:
     
     -Visualization.py
+    ```python
     def plt_residual(residual, **plt_para):
+    ```
     residual: it take array with dimension (events, x, y) and draw the histogram of each evetns
     plt_para: take the keywords for the plot
     example: 
