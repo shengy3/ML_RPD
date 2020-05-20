@@ -7,46 +7,11 @@ from tensorflow.keras.models import Model
 import tensorflow
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
-from lib.PerformanceEvaluator import get_event_in_range
+from lib.PerformanceEvaluator import get_event_in_range, load_data
 
 %load_ext autoreload
 %autoreload 2
-#tensorflow.keras.backend.set_epsilon(1)
 
-
-def get_data_set(case, normalization = False, flatten = False, pad = 1, test_size=0.3):
-        PATH = f"./Data/{case}.pickle"
-        df = pd.read_pickle(PATH)
-        truth = df["Truth_44"].to_numpy()
-        bias = df["RPD"].to_numpy()
-        gpos = np.array([[x, y] for x, y in zip(df["gunPosX"].to_numpy(), df["gunPosY"].to_numpy())])
-        
-        train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = train_test_split(bias, gpos, truth, \
-                                                                        test_size=test_size, random_state = 42)
-
-        
-        if normalization:
-            tra_bias = np.array([i.reshape(4,4,1)/np.max(i) for i in train_bias])
-            val_bias = np.array([i.reshape(4,4,1)/np.max(i) for i in val_bias])
-            tra_truth = np.array([i.reshape(4,4,1)/np.max(i) for i in tra_truth])
-            val_truth = np.array([i.reshape(4,4,1)/np.max(i) for i in val_truth])
-
-        else:
-            tra_bias = np.array([i.reshape(4,4,1) for i in train_bias])
-            val_bias = np.array([i.reshape(4,4,1) for i in val_bias])
-            tra_truth = np.array([i.reshape(4,4,1) for i in tra_truth])
-            val_truth = np.array([i.reshape(4,4,1) for i in val_truth])
-
-        
-        if flatten:
-                tra_truth = np.array([i.reshape(16) for i in tra_truth])
-                val_truth = np.array([i.reshape(16) for i in val_truth])
-        if pad:
-            tra_bias = np.pad(tra_bias[:, :, :, :], ((0, 0), (pad, pad), (pad, pad), (0,0)), 'constant')
-            val_bias = np.pad(val_bias[:, :, :, :], ((0, 0), (pad, pad), (pad, pad), (0,0)), 'constant')
-        
-        return tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth
-    
 def generate_model():
     
     model = Sequential()
