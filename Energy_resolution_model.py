@@ -1,82 +1,26 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from lib.Visualization import plot_residual
-from lib.Fitting import fit_gaussian, fit_double_gaussian
-plt.rcParams.update({'font.size': 15})
-plt.rcParams.update({"savefig.bbox": 'tight'})
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Input, Dense, Dropout, Flatten, Conv2D, MaxPool2D, Reshape
 from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
 import tensorflow
 from sklearn.model_selection import train_test_split
-
-from lib.PerformanceEvaluator import get_RMS, load_data, get_event_in_range, case_list, get_mask
 import tensorflow.keras as keras
-from lib.RPD_CM_calculator import RPD_CM_calculator
+from lib.PerformanceEvaluator import get_event_in_range
 
-from lib.Visualization import plot_residual
-from lib.Fitting import fit_gaussian, fit_double_gaussian
 %load_ext autoreload
 %autoreload 2
 #tensorflow.keras.backend.set_epsilon(1)
 
 
-def evaluate_prediction(model, input_ary, truth, case_name, i, tag = ''):
-    #predict the distribution
-    predict = model.predict(input_ary)    
-    #calculate the CoM from ML output (Recon_CM) and ground truth(True_CM)
-    Recon_CM = RPD_CM_calculator(predict.reshape(-1,4,4), correction = False)
-    #set up the position of each channel in x/y
-    Recon_CM.X_pos_array = np.array([-15, -5, 5, 15])
-    Recon_CM.Y_pos_array = np.array([15, 5, -5, -15])
-    Recon_CM.calculate_CM()    
-    #calculate the CoM from ML output (Recon_CM) and ground truth(True_CM)
-    True_CM = RPD_CM_calculator(truth.reshape(-1,4,4) , correction = False)
-    #set up the position of each channel in x/y
-    True_CM.X_pos_array = np.array([-15, -5, 5, 15])
-    True_CM.Y_pos_array = np.array([15, 5, -5, -15])
-    True_CM.calculate_CM()
-    #calculate the residual
-    CM_residual = True_CM.CM - Recon_CM.CM
-    
-    #set up the range for histogram
-    r = 10
-    hist_range = [-r, r]
-    hist_range2D = [hist_range, hist_range]
-    output_folder = "./Output/fig/Energy_weight_training/"
-    
-    #plot residual
-    single_gaussian_plt_para = {'fit_function':fit_gaussian,
-    "init_para" :(10,1, 1),#init fit constant for the gaussian
-    "n_bins": 200,#number of bin for the historgram in fit_range_def
-    "fit_range_def": (-10, 10),#the range for gaussian fitting
-    "range_def": (-10, 10),#the whole range of the histogram 
-    "xlim": [-3, 3],#the range of the plot in x
-    "density": True,#normalize histogram to density
-    "output_path":output_folder + f"{tag}_CM_{case_name}_single_gaussian_residual_{i}.pdf"}#output figure
-    
-    ax, fig = plot_residual(CM_residual, **single_gaussian_plt_para)   
-    plt.close('all')
-    
-    #plot 2d histogram 
-    hist_range2D = [hist_range, hist_range]
-    plt.hist2d(Recon_CM.CM[:,0], Recon_CM.CM[:,1], bins = 40, normed=True, range = hist_range2D)
-    plt.xlim(hist_range)
-    plt.ylim(hist_range)
-    plt.title("CoM prediction")
-    plt.xlabel("x (mm)")
-    plt.ylabel("y (mm)")
-    cbar = plt.colorbar()
-    cbar.ax.get_yaxis().labelpad = 15
-    cbar.ax.set_ylabel('Normalized number of events', rotation=270)
-    plt.savefig(output_folder + f"{tag}_Recon_CM_{case_name}_2Dprediction_{i}.pdf")
-    plt.close()
-    
-def get_data_set(bias, gpos, truth, normalization = False, flatten = False, pad = 1, test_size=0.3):
-    
+def get_data_set(case, normalization = False, flatten = False, pad = 1, test_size=0.3):
+        PATH = f"./Data/{case}.pickle"
+        df = pd.read_pickle(PATH)
+        truth = df["Truth_44"].to_numpy()
+        bias = df["RPD"].to_numpy()
+        gpos = np.array([[x, y] for x, y in zip(df["gunPosX"].to_numpy(), df["gunPosY"].to_numpy())])
+        
         train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = train_test_split(bias, gpos, truth, \
                                                                         test_size=test_size, random_state = 42)
 
@@ -125,34 +69,20 @@ def generate_model():
     
     return model 
 
-def train_model(start_case = 0):
+def train_model(**Training_para):
     case_list = ["120GeV_neutron_uniplane_HAD",  "400GeV_neutron_uniplane_HAD", "1TeV_neutron_uniplane_HAD", "2.5TeV_neutron_uniplane_HAD"]
     
-    for case in range(start_case, 4):
-        #set up the parameter
-        test_size = 0.3
-        normalization = True
-        flatten = True
-        pad = 1
-        n_epochs = 1
+    for case in range(Training_para['start_case'], 4):
+
         
         #read in the data
-        PATH = f"./Data/{case_list[case]}.pickle"
-        df = pd.read_pickle(PATH)
-        truth = df["Truth_44"].to_numpy()
-        bias = df["RPD"].to_numpy()
-        gpos = np.array([[x, y] for x, y in zip(df["gunPosX"].to_numpy(), df["gunPosY"].to_numpy())])
-
-
         loss_function_tag = 'BinaryX'
 
-        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(bias,\
-                                                                                    gpos,\
-                                                                                    truth,\
-                                                                                    normalization = True,\
-                                                                                    flatten = True,\
-                                                                                    pad = 1,
-                                                                                    test_size = test_size)
+        tra_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case],\
+                                                                                     normalization = Training_para['normalization'],\
+                                                                                     flatten = Training_para['flatten'],\
+                                                                                     pad = Training_para['pad'],
+                                                                                    test_size = Training_para['test_size'] )
         #generate the validation set (center 10x10)
         center_tra_bias, center_tra_gpos, center_truth = get_event_in_range(val_bias, val_gpos, val_truth)
 
@@ -160,13 +90,30 @@ def train_model(start_case = 0):
         
         model.compile(optimizer='adam', loss = 'binary_crossentropy', metrics=["kullback_leibler_divergence"], )
         #train for 10 epoch * 20 times
-        for i in range(20):
-            history = model.fit(tra_bias, tra_truth, epochs=n_epochs, batch_size=1000, validation_data = (val_bias, val_truth))     
+        for i in range(Training_para['n_repeat']):
+            history = model.fit(tra_bias, tra_truth, epochs=Training_para['n_epochs'], batch_size=1000, validation_data = (val_bias, val_truth))     
             model.save(f'./Output/Model/Energy_reso_{loss_function_tag}_{case_list[case]}_{i}.h5')
-            evaluate_prediction(model, center_tra_bias, center_truth, case_list[case], i, tag = loss_function_tag)
 
             
             
+"""
+case_list = ["120GeV_neutron_uniplane_HAD", 
+             "400GeV_neutron_uniplane_HAD",
+             "1TeV_neutron_uniplane_HAD",
+             "2.5TeV_neutron_uniplane_HAD"]
+             
+Note: instaed using recall in the keras, here we use n_epochs to as one iteration, 
+it is easier to implant the evaluation step after each evaluation.
+The total training epochs = n_epochs * n_repeat
+"""
+
+Training_para ={'test_size' : 0.3, #the size in training/test split
+        'normalization' : True, # noramlized the input and the output
+        'flatten' : True, #flatten the output in put 1x16 array
+        'pad' : 1, #add padding to the input 2D arraay
+        'n_epochs' : 10, #number of epoch per interation for training 
+        'n_repeat': 10, #
+       'start_case': 3}# select the start case in case list to train. 
             
 if __name__ == '__main__':
-    train_model(start_case = 3)
+    train_model(**Training_para)

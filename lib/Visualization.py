@@ -5,56 +5,23 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 
 
-def plot_event(total_event, Xin, Yin, Xcm, Ycm, Scan, run):
-    #plot total event
-    plt.figure(figsize = (10,10))
-    plt.imshow(total_event.reshape(4,4), norm=LogNorm())
-    cb = plt.colorbar()
-    cb.set_label('Number of photon', rotation=270 ,size = 15, labelpad = 25)
-    cb.ax.tick_params(labelsize=20)
-    Xin, Yin = get_beam_pos(Scan, run)
-    plt.annotate(f"BeamPos: {Xin, Yin} \nCal_CoM:  {Xcm, Ycm}",
-                 xy=(0, 1),
-                 size=15,
-                 xycoords="axes fraction",
-                 color='white',
-                 xytext=(5, -5),
-                 textcoords="offset points",
-                 ha="left",
-                 va="top")
-    plt.xlabel("X position (mm)", size = 20)
-    plt.ylabel("y position (mm)", size = 20)
-    plt.gca().set_xticklabels(['']*10)
-    plt.gca().set_yticklabels(['']*10)
-
-    plt.title(f" RPD Run {run}", size = 30)
-    plt.savefig(f'./fig/{run}.png')
-    plt.show()
-
-def plot_hist_matrix(df, fig_name):
-    dim = len(df.columns)
-    fig, axes = plt.subplots(nrows = dim, ncols = dim, figsize = (20,20))
-    for i, (labely, datay) in zip(range(dim), df.items()):
-        for j, (labelx, datax) in zip(range(dim), df.items()):
-            if i != j:
-                axes[i,j].hist2d(datax,datay, bins = 50, range = [[-40, 40], [-40, 40]] ,norm = LogNorm())
-            elif i == j:
-                axes[i,j].hist(datax, bins=80, density = True, range =[-40,40])
-            
-            axes[i,j].set_xlabel(labelx, fontsize = 20, rotation = 0)
-            axes[i,j].set_ylabel(labely, fontsize = 20, rotation = 90,  labelpad = 10)
-            #axes[i,j].set_title(f"{i},{j}")
-
-    for i, ax in enumerate(axes.flat):
-        ax.label_outer()
-
-    plt.subplots_adjust(wspace = 0.05, hspace = 0.07)
-    plt.tight_layout()
-    plt.savefig(f"./Output/fig/{fig_name}.pdf")
-    
 
 def plot_residual(residual, **plt_para):
-
+    """
+    residual: it take array with dimension (events, x, y) and draw the histogram of each evetns
+    plt_para: take the keywords for the plot
+    
+    example: 
+    'fit_function':fit_gaussian,
+    "init_para": initial fit constant for the gaussian. (10, 1, 1)
+    "n_bins": number of bin for the historgram in fit_range_def, 200
+    "fit_range_def": the range for gaussian fitting. (-10, 10)
+    "range_def": the whole range of the histogram, (-10, 10)
+    "xlim": the range of the plot in x, [-3, 3],
+    "density": normalize histogram to density, True
+    "output_path": output path for figure, " "
+    
+    """
     fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20,10))
     
     ax0 = get_residual_subplot(ax[0], residual[:,0], **plt_para)
