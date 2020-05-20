@@ -5,53 +5,6 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 
 
-def plot_event(total_event, Xin, Yin, Xcm, Ycm, Scan, run):
-    #plot total event
-    plt.figure(figsize = (10,10))
-    plt.imshow(total_event.reshape(4,4), norm=LogNorm())
-    cb = plt.colorbar()
-    cb.set_label('Number of photon', rotation=270 ,size = 15, labelpad = 25)
-    cb.ax.tick_params(labelsize=20)
-    Xin, Yin = get_beam_pos(Scan, run)
-    plt.annotate(f"BeamPos: {Xin, Yin} \nCal_CoM:  {Xcm, Ycm}",
-                 xy=(0, 1),
-                 size=15,
-                 xycoords="axes fraction",
-                 color='white',
-                 xytext=(5, -5),
-                 textcoords="offset points",
-                 ha="left",
-                 va="top")
-    plt.xlabel("X position (mm)", size = 20)
-    plt.ylabel("y position (mm)", size = 20)
-    plt.gca().set_xticklabels(['']*10)
-    plt.gca().set_yticklabels(['']*10)
-
-    plt.title(f" RPD Run {run}", size = 30)
-    plt.savefig(f'./fig/{run}.png')
-    plt.show()
-
-def plot_hist_matrix(df, fig_name):
-    dim = len(df.columns)
-    fig, axes = plt.subplots(nrows = dim, ncols = dim, figsize = (20,20))
-    for i, (labely, datay) in zip(range(dim), df.items()):
-        for j, (labelx, datax) in zip(range(dim), df.items()):
-            if i != j:
-                axes[i,j].hist2d(datax,datay, bins = 50, range = [[-40, 40], [-40, 40]] ,norm = LogNorm())
-            elif i == j:
-                axes[i,j].hist(datax, bins=80, density = True, range =[-40,40])
-            
-            axes[i,j].set_xlabel(labelx, fontsize = 20, rotation = 0)
-            axes[i,j].set_ylabel(labely, fontsize = 20, rotation = 90,  labelpad = 10)
-            #axes[i,j].set_title(f"{i},{j}")
-
-    for i, ax in enumerate(axes.flat):
-        ax.label_outer()
-
-    plt.subplots_adjust(wspace = 0.05, hspace = 0.07)
-    plt.tight_layout()
-    plt.savefig(f"./Output/fig/{fig_name}.pdf")
-    
 
 def plot_residual(residual, **plt_para):
 
