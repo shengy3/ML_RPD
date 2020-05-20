@@ -14,6 +14,7 @@ lib:
     def plt_residual(residual, **plt_para):
         residual: it take array with dimension (events, x, y) and draw the histogram of each evetns
         plt_para: take the keywords for the plot
+        
         example: 
         'fit_function':fit_gaussian,
         "init_para": initial fit constant for the gaussian. (10, 1, 1)
@@ -41,7 +42,7 @@ lib:
         example:
         train_bias, val_bias, tra_gpos, val_gpos, tra_truth, val_truth = get_data_set(case_list[case])
     
-    get_event_in_range(bias, gpos, truth, lim = 10):
+    def get_event_in_range(bias, gpos, truth, lim = 10):
         """
         get the events based on the gpos within lim
 
