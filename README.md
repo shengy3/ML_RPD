@@ -36,16 +36,16 @@ You can train the model by
     python Train_energy_resolution_model.py # for energy reconstruction model
     python Train_Qavg_model.py # for Q-vector model
 
-The output model will be in ./Output/Model  
+The output model will be in *./Output/Model*.
 For now, the inputs are a 2 dimension tuple and 6x6 array, 4x4 pixel with 1 padding. The output is the 1 x 16 array for energy reconstruction and 2 dimension tuples for Q-vector estimation.
 
-You can performa the evaluation in Evaluation_for_eng_resolu_model.ipynb or by
+You can performa the evaluation in *Evaluation_for_eng_resolu_model.ipynb* or by
     
     python Evaluation_for_Qavg_model.py
 # Results:
-
+The difference between predicted Q-vector and ground truth is fitted with a Gaussian function. The standard deviation of the fitted gaussian is known as spatial resolution. The spatial resolution of the neural network in x and y directino is 0.26 and 0.36 mm respectively. The resolution is **30 times** smaller than the pixel of the detector. 
 <p align="center">
-<img src="https://github.com/shengy3/ML_RPD/blob/master/images/RPD_structure.png" width="324" height="250">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/residual_result.pdf" width="324" height="250">
 </p>
 
 # libray:
