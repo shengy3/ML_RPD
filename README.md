@@ -1,14 +1,54 @@
+# Convolutional neural network for reaction plane reconstruction
+
+This the deep learning model using convolutional neural network (CNN) to reconstruct the reaction plane for the nuclear 
+collision events.
+
+
+# Problem formulation:
+
+
+<p align="center">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/Experiment%20setup.png" width="600" height="250">
+</p>
+
+When a high particle strikes a nuclide in a nuclear detector, the particle breaks the nuclide into fragements and create multiple 
+charged particles along the incident direction of the incident particle. The shape of created charged particles, called shower, is a cone with the vertex 
+at the interaction point. If we place a 2D array detector after the nuclear detector, we could a projection of the shower and be able to resonstruct the position of the incident particles. However, due to the limited space and the resource, the 2D array detector has overlapping area that leads to the distortion of the signal distribution. 
+
+<p align="center">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/RPD_structure.png" width="324" height="250">
+</p>
+
+In addition, in the reality, there are maybe up to 40 particle incident in the same time. This makes the incident position of the particles very difficult to estimate. 
+
+This project is to develop a neural network to reconstruct the original energy distribution and estimate the average of the incident particles, Q-vector. The model has two inputs: 1. CNN for the 2D array signal, 2. the number of incident particles and particles that create a shower. Right now, the model for energy reconstruction and Q-vector has the same model structure except for the output layer and the loss function. The visialization of the Q-vector model is:
+
+<p align="center">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/ML_model_structure.png" align="center" width="100" height="250" >
+</p>
+
+# Training and evaluation
+
 Please find the training data set in this link:https://uofi.box.com/s/0bmqesd2mnqmnknap08fso61cdwjjby9  
 Then, put the downloaded file to the Data folder.  
 You can train the model by 
 
-    python Energy_resolution_model.py  
+    python Train_energy_resolution_model.py # for energy reconstruction model
+    python Train_Qavg_model.py # for Q-vector model
 
 The output model will be in ./Output/Model  
-For now, the input is 6x6 array, 4x4 channels with 1 padding. The output is the 1 x 16 array.
-You can performa the evaluation in Performance_evaluation.ipynb
+For now, the inputs are a 2 dimension tuple and 6x6 array, 4x4 pixel with 1 padding. The output is the 1 x 16 array for energy reconstruction and 2 dimension tuples for Q-vector estimation.
 
-lib:
+You can performa the evaluation in Evaluation_for_eng_resolu_model.ipynb or by
+    
+    python Evaluation_for_Qavg_model.py
+# Results:
+
+<p align="center">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/RPD_structure.png" width="324" height="250">
+</p>
+
+# libray:
     
     -Visualization.py
     def plt_residual(residual, **plt_para):
