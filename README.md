@@ -24,7 +24,7 @@ In addition, in the reality, there are maybe up to 40 particle incident in the s
 This project is to develop a neural network to reconstruct the original energy distribution and estimate the average of the incident particles, Q-vector. The model has two inputs: 1. CNN for the 2D array signal, 2. the number of incident particles and particles that create a shower. Right now, the model for energy reconstruction and Q-vector has the same model structure except for the output layer and the loss function. The visialization of the Q-vector model is:
 
 <p align="center">
-<img src="https://github.com/shengy3/ML_RPD/blob/master/images/ML_model_structure.png" align="center" width="100" height="250" >
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/ML_model_structure.png" align="center" width="150" height="350" >
 </p>
 
 # Training and evaluation
@@ -43,9 +43,9 @@ You can performa the evaluation in *Evaluation_for_eng_resolu_model.ipynb* or by
     
     python Evaluation_for_Qavg_model.py
 # Results:
-The difference between predicted Q-vector and ground truth is fitted with a Gaussian function. The standard deviation of the fitted gaussian is known as spatial resolution. The spatial resolution of the neural network in x and y directino is 0.26 and 0.36 mm respectively. The resolution is **30 times** smaller than the pixel of the detector. 
+The difference between predicted Q-vector and ground truth is fitted with a Gaussian function. The standard deviation of the fitted gaussian is known as spatial resolution. The spatial resolution of the neural network in x and y directino is 0.26 and 0.35 mm respectively. The resolution is **30 times** smaller than the pixel of the detector. 
 <p align="center">
-<img src="https://github.com/shengy3/ML_RPD/blob/master/images/residual_result.png" width="324" height="250">
+<img src="https://github.com/shengy3/ML_RPD/blob/master/images/residual_result.png" width="600" height="350">
 </p>
 
 # libray:
