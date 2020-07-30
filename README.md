@@ -43,7 +43,7 @@ You can performa the evaluation in *Evaluation_for_eng_resolu_model.ipynb* or by
     
     python Evaluation_for_Qavg_model.py
 # Results:
-The difference between predicted Q-vector and ground truth is fitted with a Gaussian function. The standard deviation of the fitted gaussian is known as spatial resolution. The spatial resolution of the neural network in x and y directino is 0.26 and 0.35 mm respectively. The resolution is **30 times** smaller than the pixel of the detector. 
+The difference between predicted Q-vector and ground truth is fitted with a Gaussian function. The standard deviation of the fitted gaussian is known as spatial resolution. The spatial resolution of the neural network in x and y direction is 0.26 and 0.35 mm respectively. The resolution is **30 times** smaller than the pixel of the detector. 
 <p align="center">
 <img src="https://github.com/shengy3/ML_RPD/blob/master/images/residual_result.png" width="600" height="350">
 </p>
