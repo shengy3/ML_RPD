@@ -13,7 +13,7 @@ collision events.
 
 When a high particle strikes a nuclide in a nuclear detector, the particle breaks the nuclide into fragements and create multiple 
 charged particles along the incident direction of the incident particle. The shape of created charged particles, called shower, is a cone with the vertex 
-at the interaction point. If we place a 2D array detector after the nuclear detector, we could a projection of the shower and be able to resonstruct the position of the incident particles. However, due to the limited space and the resource, the 2D array detector has overlapping area that leads to the distortion of the signal distribution. 
+at the interaction point. If we place a 2D array detector, reaction plane detector (RPD), after the nuclear detector, we could a projection of the shower and be able to resonstruct the position of the incident particles. However, due to the limited space and the resource, the 2D array detector has overlapping area that leads to the distortion of the signal distribution. 
 
 <p align="center">
 <img src="https://github.com/shengy3/ML_RPD/blob/master/images/RPD_structure.png" width="324" height="250">
