@@ -46,7 +46,15 @@ if __name__ == '__main__':
 
 	outA = np.load("./Data/ToyV1_Fermi_2.7TeV_Merge_122420/validA.npy", allow_pickle = True)
 	outB = np.load("./Data/ToyV1_Fermi_2.7TeV_Merge_122420/validB.npy", allow_pickle = True)
-
+	
+	"""
+	['avgGposX', 'avgGposY', 'avgPx', 'avgPy', 'pt_nuclear', 'RP_true_value',
+       'RP_gen_value', 'numParticle', 'channel_0', 'channel_1', 'channel_2',
+       'channel_3', 'channel_4', 'channel_5', 'channel_6', 'channel_7',
+       'channel_8', 'channel_9', 'channel_10', 'channel_11', 'channel_12',
+       'channel_13', 'channel_14', 'channel_15']
+	"""
+	
 	A_signal = outA[:,8:]
 	B_signal = outB[:,8:]
 
