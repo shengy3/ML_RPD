@@ -43,10 +43,10 @@ def get_model():
 	Q_avg = Dense(10, activation="relu")(Q_avg)
 	Q_avg = Dense(2, activation="tanh", name = 'Q_avg')(Q_avg)
 
-
 	model = Model(inputs=[x.input, y.input], outputs=[Q_avg])
 
 	return model
+
 def get_unit_vector(arr):
 	output = []
 	norm =  np.linalg.norm(arr, axis = 1)
