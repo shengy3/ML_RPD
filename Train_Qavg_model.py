@@ -93,8 +93,10 @@ if __name__ == '__main__':
 
 
 	trainA, validA, trainB, validB = train_test_split(A, B, test_size=test_size, random_state = 42)
-
-
+	
+	print("Save validation set")
+	np.save("./Data/ToyV1_Fermi_2.7TeV_Merge_122420/validA.npy", validA)
+	np.save("./Data/ToyV1_Fermi_2.7TeV_Merge_122420/validB.npy", validB)
 
 	train = trainA.append(trainB).to_numpy()
 	valid = validA.append(validB).to_numpy()
