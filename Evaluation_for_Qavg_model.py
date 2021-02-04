@@ -36,10 +36,6 @@ def average_vector(QA, QB):
     NA = np.array([QA[:,0 ] / NormA, QA[:,1 ] / NormA])
     NB = np.array([QB[:,0 ] / NormB, QB[:,1 ] / NormB])
     flip_B = -NB
-
-    #AVG_v = (NA + NB) / 2
-    #AVG_v = AVG_v.reshape(-1, 2)
-    #avg = np.arctan2(AVG_v[:,1], AVG_v[:,0])
     avgx = (NA[0] + flip_B[0]) / 2     
     avgy = (NA[1] + flip_B[1]) / 2     
     avg = np.arctan2(avgy, avgx)    
@@ -247,3 +243,7 @@ if __name__ == '__main__':
 		    Avg.Fill()
 		f.Write()
 		f.Close()
+	else:
+		np.save("TreeFermi_A.npy", TreeA)
+		np.save("TreeFermi_B.npy", TreeB)
+		np.save("Tree_arms_fermi.npy", Tree_arms)
