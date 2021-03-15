@@ -3,6 +3,7 @@ import tensorflow.keras as keras
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Input, Dense,  Flatten, Conv2D,  
 from tensorflow.keras.models import Model
+import pandas as pd
 
 
 
@@ -64,7 +65,7 @@ def process_signal(ary, normalization = False, flatten = False, padding = 1):
 	if flatten:
 		ary = np.array([i.reshape(16) for i in ary])
 	if padding:
-		ary = np.pad(ary[:, :, :, :], ((0, 0), (pad, pad), (pad, pad), (0,0)), 'constant')
+		ary = np.pad(ary[:, :, :, :], ((0, 0), (padding, padding), (padding, padding), (0,0)), 'constant')
 	return ary
 
 
