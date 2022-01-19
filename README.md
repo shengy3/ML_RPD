@@ -27,6 +27,8 @@ This project is to develop a neural network to reconstruct the original energy d
 <img src="https://github.com/shengy3/ML_RPD/blob/master/images/ML_model_structure.png" align="center" width="150" height="350" >
 </p>
 
+Please find the details in Chapter3 in "prelim_doc.pdf"
+
 # Training and evaluation
 
 Please find the training data set in this link:https://uofi.box.com/s/0bmqesd2mnqmnknap08fso61cdwjjby9  
